@@ -7,18 +7,26 @@
 //
 
 import Foundation
-struct Card: Hashable {
-    private var id: Int
+struct Card: Equatable {
+    let id: Int
+    let number: Int
+    let color: Color
+    let shape: Shape
+    let style: Style
     
     static func == (lhs: Card, rhs: Card) -> Bool {
         return lhs.id == rhs.id
     }
-    
-    init(id: Int) {
-        self.id = id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
+}
+
+enum Color: CaseIterable {
+    case A, B, C
+}
+
+enum Style: CaseIterable {
+    case filled, striped, outline
+}
+
+enum Shape: CaseIterable {
+    case A, B, C
 }
