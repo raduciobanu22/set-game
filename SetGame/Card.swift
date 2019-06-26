@@ -9,7 +9,7 @@
 import Foundation
 struct Card: Equatable {
     let id: Int
-    let number: Int
+    let total: Int
     let color: Color
     let shape: Shape
     let style: Style
@@ -19,14 +19,16 @@ struct Card: Equatable {
     }
 }
 
-enum Color: CaseIterable {
-    case A, B, C
-}
+extension Card {
+    enum Color: CaseIterable {
+        case A, B, C
+    }
 
-enum Style: CaseIterable {
-    case filled, striped, outline
-}
+    enum Style: CaseIterable {
+        case A, B, C
+    }
 
-enum Shape: CaseIterable {
-    case A, B, C
+    enum Shape: CaseIterable {
+        case A, B, C
+    }
 }

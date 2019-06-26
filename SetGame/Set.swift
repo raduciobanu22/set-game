@@ -22,27 +22,27 @@ class Set {
             }
             
             // They all have the same color or have three different colors
-            for color in Color.allCases {
+            for color in Card.Color.allCases {
                 if selectedCards.filter({$0.color == color}).count == 2 {
                     return false
                 }
             }
             
-            for number in 1...3 {
-                if selectedCards.filter({$0.number == number}).count == 2 {
+            for symbolsNumber in 1...3 {
+                if selectedCards.filter({$0.total == symbolsNumber}).count == 2 {
                     return false
                 }
             }
 
             // They all have the same shape or have three different shapes.
-            for shape in Shape.allCases {
+            for shape in Card.Shape.allCases {
                 if selectedCards.filter({$0.shape == shape}).count == 2 {
                     return false
                 }
             }
             
             // They all have the same shading or have three different shadings.
-            for style in Style.allCases {
+            for style in Card.Style.allCases {
                 if selectedCards.filter({$0.style == style}).count == 2 {
                     return false
                 }
@@ -54,17 +54,14 @@ class Set {
     
     init() {
         var id = 1
-        for number in 1...3 {
-            for shape in Shape.allCases {
-                for style in Style.allCases {
-                    for color in Color.allCases {
-                        if id > 36 {
-                            break
-                        }
+        for symbolsNumber in 1...3 {
+            for shape in Card.Shape.allCases {
+                for style in Card.Style.allCases {
+                    for color in Card.Color.allCases {
                         deck.append(
                             Card(
                                 id: id,
-                                number: number,
+                                total: symbolsNumber,
                                 color: color,
                                 shape: shape,
                                 style: style)
@@ -121,5 +118,9 @@ class Set {
             cards += deck[range]
             deck.removeFirst(range.count)
         }
+    }
+    
+    func shuffleCards() {
+        cards.shuffle()
     }
 }

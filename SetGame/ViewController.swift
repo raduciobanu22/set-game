@@ -11,121 +11,119 @@ import UIKit
 class ViewController: UIViewController {
     var game = Set()
     
-    var shapes: [Shape:String] = [.A: "▲", .B: "●", .C: "◼︎"]
+    var shapes: [Card.Shape:CardView.Shape] = [.A: CardView.Shape.diamond, .B: CardView.Shape.oval, .C: CardView.Shape.squiggle]
+    var colors: [Card.Color:UIColor] = [.A: UIColor.green, .B: UIColor.red, .C: UIColor.purple]
+    var styles: [Card.Style:CardView.Style] = [.A: CardView.Style.filled, .B: CardView.Style.outline, .C: CardView.Style.striped]
     
-    var colors: [Color: UIColor] = [.A: UIColor.blue, .B: UIColor.cyan, .C: UIColor.orange]
+    @IBOutlet weak var scoreLabel: UILabel!    
     
-    @IBOutlet weak var scoreLabel: UILabel!
-    
-    @IBOutlet var cardsButtons: [UIButton]! {
+    @IBOutlet weak var boardView: BoardView! {
         didSet {
-            for index in cardsButtons.indices {
-                let card = cardsButtons[index]
-                card.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-                card.layer.cornerRadius = 8.0
-            }
+            let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.swipe(recognizer:)))
+            swipeGestureRecognizer.direction = .up
+            boardView.addGestureRecognizer(swipeGestureRecognizer)
+            
+            let rotationGestureRecognizer = UIRotationGestureRecognizer(target: self, action: #selector(ViewController.rotate(recognizer:)))
+            boardView.addGestureRecognizer(rotationGestureRecognizer)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view
         
         game.dealCards()
         updateViewFromModel()
     }
     
     private func updateViewFromModel() {
-        for index in cardsButtons.indices {
-            // These cards are visible
-            if index < game.cards.count {
-                let card = game.cards[index]
-                
-                if game.deck.count == 0 && game.matchedCards.contains(card) {
-                    hideCard(cardButton: cardsButtons[index])
-                    continue
-                }
-                
-                // If card is selected, add border
-                if game.selectedCards.contains(card) {
-                    cardsButtons[index].layer.borderWidth = 3.0
-                    cardsButtons[index].layer.borderColor = UIColor.red.cgColor
-                } else {
-                    cardsButtons[index].layer.borderWidth = 1.0
-                    cardsButtons[index].layer.borderColor = UIColor.purple.cgColor
-                }
-                
-                // If we have a set, use a different color border
-                drawShape(on: cardsButtons[index])
-            // These aren't visible
-            } else {
-                hideCard(cardButton: cardsButtons[index])
+        var cardViews = [CardView]()
+        for card in game.cards {
+            let cardView = CardView()
+            cardView.color = colors[card.color]!
+            cardView.style = styles[card.style]!
+            cardView.shape = shapes[card.shape]!
+            cardView.total = card.total
+            
+            if game.deck.count == 0 && game.matchedCards.contains(card) {
+                cardView.isHidden = true
+                continue
             }
+            
+            if game.selectedCards.contains(card) {
+                cardView.isSelected = true
+            }
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.tapCard(recognizer:)))
+            cardView.addGestureRecognizer(tapGestureRecognizer)
+            cardViews.append(cardView)
         }
+        boardView.cardViews = cardViews
         updateDealButton()
         updateScoreLabel()
     }
     
     @IBOutlet weak var dealButton: UIButton!
     
-    @IBAction func deal(_ sender: UIButton) {
-        game.dealCards()
-        updateViewFromModel()
+    @IBAction func dealButtonTap(_ sender: UIButton) {
+        dealMoreCards()
     }
     
-    @IBAction func touchCard(_ sender: UIButton) {
-        if let cardIndex = cardsButtons.lastIndex(of: sender) {
+    private func selectCard(view: CardView) {
+        if let cardIndex = boardView.cardViews.lastIndex(of: view) {
             game.selectCard(at: cardIndex)
             updateViewFromModel()
         }
     }
     
-    @IBAction func newGame(_ sender: UIButton) {
+    @IBAction func newGameButtonTap(_ sender: UIButton) {
+        newGame()
+    }
+    
+    private func newGame() {
         game = Set()
         game.dealCards()
         updateViewFromModel()
     }
     
-    /// Draws the correct shape on the given button
-    ///
-    /// - Parameter button: Card button
-    private func drawShape(on button: UIButton) {
-        if let cardIndex = cardsButtons.lastIndex(of: button) {
-            let card = game.cards[cardIndex]
-            var attributes: [NSAttributedString.Key:Any] = [
-                .strokeWidth : (card.style == .filled || card.style == .striped) ? 0 : 5.0,
-                .strokeColor : colors[card.color]!
-            ]
-            
-            if card.style == .striped {
-                attributes[.foregroundColor] = colors[card.color]!.withAlphaComponent(0.15)
-            } else if card.style == .filled {
-                attributes[.foregroundColor] = colors[card.color]!.withAlphaComponent(1.0)
-            }
-            
-            let symbol = shapes[card.shape]!.repeated(n: card.number)
-            let title = NSAttributedString(string: symbol, attributes: attributes)
-            button.setAttributedTitle(title, for: UIControl.State.normal)
-        }
+    private func dealMoreCards() {
+        game.dealCards()
+        updateViewFromModel()
     }
     
     private func updateDealButton() {
-        if game.deck.isEmpty {
-            dealButton.isEnabled = false
-        }
+        dealButton.isEnabled = !game.deck.isEmpty
     }
     
     private func updateScoreLabel() {
         scoreLabel.text = "Score: \(game.score)"
     }
     
-    private func hideCard(cardButton: UIButton) {
-        cardButton.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-        cardButton.layer.borderWidth = 0
-        cardButton.setAttributedTitle(NSAttributedString(string: ""), for: UIControl.State.normal)
-        cardButton.setTitle("", for: UIControl.State.normal)
+    @objc private func swipe(recognizer: UISwipeGestureRecognizer) {
+        switch recognizer.state {
+        case .changed: fallthrough
+        case .ended: dealMoreCards()
+        default: break
+        }
     }
-
+    
+    @objc private func tapCard(recognizer: UITapGestureRecognizer) {
+        switch recognizer.state {
+        case .ended:
+            if let cardView = recognizer.view as? CardView {
+                selectCard(view: cardView)
+            }
+        default: break
+        }
+    }
+    
+    @objc private func rotate(recognizer: UIRotationGestureRecognizer) {
+        switch recognizer.state {
+        case .ended:
+            game.cards.shuffle()
+            updateViewFromModel()
+        default: break
+        }
+    }
+    
 }
 
 extension String {

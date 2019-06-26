@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1735DF4722BCD4A10095771F /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1735DF4622BCD4A10095771F /* Grid.swift */; };
+		1735DF4922BCDE050095771F /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1735DF4822BCDE050095771F /* BoardView.swift */; };
+		1735DF4B22BCDF050095771F /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1735DF4A22BCDF050095771F /* CardView.swift */; };
 		174CEA2022B8BEBA003D00C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174CEA1F22B8BEBA003D00C3 /* AppDelegate.swift */; };
 		174CEA2222B8BEBA003D00C3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174CEA2122B8BEBA003D00C3 /* ViewController.swift */; };
 		174CEA2522B8BEBA003D00C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 174CEA2322B8BEBA003D00C3 /* Main.storyboard */; };
@@ -36,8 +39,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1735DF4622BCD4A10095771F /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Grid.swift; path = SetGame/Grid.swift; sourceTree = SOURCE_ROOT; };
+		1735DF4822BCDE050095771F /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		1735DF4A22BCDF050095771F /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		174CEA1C22B8BEBA003D00C3 /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		174CEA1F22B8BEBA003D00C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		174CEA1F22B8BEBA003D00C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../AppDelegate.swift; sourceTree = "<group>"; };
 		174CEA2122B8BEBA003D00C3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		174CEA2422B8BEBA003D00C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		174CEA2622B8BEC7003D00C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -101,12 +107,14 @@
 		174CEA1E22B8BEBA003D00C3 /* SetGame */ = {
 			isa = PBXGroup;
 			children = (
-				174CEA1F22B8BEBA003D00C3 /* AppDelegate.swift */,
+				17F0C93422BCD3C50049EEE8 /* Supporting Files */,
+				1735DF4622BCD4A10095771F /* Grid.swift */,
 				174CEA2122B8BEBA003D00C3 /* ViewController.swift */,
+				1735DF4822BCDE050095771F /* BoardView.swift */,
+				1735DF4A22BCDF050095771F /* CardView.swift */,
 				174CEA4F22B8DE34003D00C3 /* Set.swift */,
 				174CEA2322B8BEBA003D00C3 /* Main.storyboard */,
 				174CEA2622B8BEC7003D00C3 /* Assets.xcassets */,
-				174CEA2822B8BEC7003D00C3 /* LaunchScreen.storyboard */,
 				174CEA2B22B8BEC7003D00C3 /* Info.plist */,
 				174CEA4D22B8DD48003D00C3 /* Card.swift */,
 			);
@@ -129,6 +137,15 @@
 				174CEA4122B8BEC9003D00C3 /* Info.plist */,
 			);
 			path = SetGameUITests;
+			sourceTree = "<group>";
+		};
+		17F0C93422BCD3C50049EEE8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				174CEA2822B8BEC7003D00C3 /* LaunchScreen.storyboard */,
+				174CEA1F22B8BEBA003D00C3 /* AppDelegate.swift */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,9 +279,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1735DF4B22BCDF050095771F /* CardView.swift in Sources */,
 				174CEA5022B8DE34003D00C3 /* Set.swift in Sources */,
 				174CEA2222B8BEBA003D00C3 /* ViewController.swift in Sources */,
 				174CEA4E22B8DD48003D00C3 /* Card.swift in Sources */,
+				1735DF4922BCDE050095771F /* BoardView.swift in Sources */,
+				1735DF4722BCD4A10095771F /* Grid.swift in Sources */,
 				174CEA2022B8BEBA003D00C3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
